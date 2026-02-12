@@ -45,7 +45,7 @@ public class Pong : Game
         _paddleRight.Initialize(new Vector2(690,198),new Vector2(8,124),240,PlayAreaBoundingBox);
 
         _paddleLeft = new Paddle();
-        _paddleLeft.Initialize(new Vector2(52,198),new Vector2(8,124),240,PlayAreaBoundingBox);
+        _paddleLeft.Initialize(new Vector2(54,198),new Vector2(8,124),240,PlayAreaBoundingBox);
 
         base.Initialize();
     }
