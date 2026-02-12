@@ -16,6 +16,14 @@ public class Paddle
     // Also, we removed the "get => _direction" because we don't need it
     internal Vector2 Direction { set => _direction = value; }
 
+    internal Rectangle BoundingBox
+    {
+        get
+        {
+            return new Rectangle(_position.ToPoint(),_dimensions.ToPoint());
+        }
+    }
+
     internal void Initialize(Vector2 position, Vector2 dimensions, float speed, Rectangle playAreaBoundingBox)
     {
         _position = position;

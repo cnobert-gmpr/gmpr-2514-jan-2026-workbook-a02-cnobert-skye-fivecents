@@ -65,8 +65,6 @@ public class Pong : Game
         float dt = (float) gameTime.ElapsedGameTime.TotalSeconds;
         KeyboardState kbState = Keyboard.GetState();
 
-        _ball.Update(gameTime);
-
         #region Right Player Movement
             if(kbState.IsKeyDown(Keys.Up))
                 _paddleRight.Direction = new Vector2(0,-1);
@@ -88,6 +86,10 @@ public class Pong : Game
 
             _paddleLeft.Update(gameTime);
         #endregion
+
+        _ball.ProcessCollision(_paddleRight.BoundingBox);
+        _ball.ProcessCollision(_paddleLeft.BoundingBox);
+        _ball.Update(gameTime);
 
         base.Update(gameTime);
     }

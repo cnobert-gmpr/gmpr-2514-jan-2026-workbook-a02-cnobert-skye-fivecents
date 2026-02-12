@@ -6,10 +6,20 @@ namespace Lesson07_Pong;
 
 public class Ball
 {
+    private const float _collisionTimerCooldown = 0.4f;
+
     private Texture2D _texture;
     private Vector2 _position, _dimensions, _direction;
-    private float _speed;
+    private float _speed, _collisionTimer;
     private Rectangle _playAreaBoundingBox;
+
+    internal Rectangle BoundingBox
+    {
+        get
+        {
+            return new Rectangle(_position.ToPoint(),_dimensions.ToPoint());
+        }
+    }
 
     internal void Initialize(Vector2 position, Vector2 dimensions, Vector2 direction, float speed, Rectangle playAreaBoundingBox)
     {
@@ -28,6 +38,7 @@ public class Ball
     internal void Update(GameTime gameTime)
     {
         float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
+        _collisionTimer += dt;
 
         _position += _direction * _speed * dt;
 
@@ -45,5 +56,25 @@ public class Ball
     {
         Rectangle ballRect = new Rectangle((int)_position.X,(int)_position.Y,(int)_dimensions.X,(int)_dimensions.Y);
         spriteBatch.Draw(_texture,ballRect,Color.White);
+    }
+
+    internal void ProcessCollision(Rectangle collisionBoundingBox)
+    {
+        if(_collisionTimer >= _collisionTimerCooldown && BoundingBox.Intersects(collisionBoundingBox))
+        { 
+            _collisionTimer = 0f;
+            Rectangle intersection = Rectangle.Intersect(BoundingBox,collisionBoundingBox);
+
+            if(intersection.Width > intersection.Height)
+            {
+                // Intersection is a horizontal rect, so it's a top/bottom collision
+                _direction.Y *= -1;
+            }
+            else
+            {
+                // Vertical rect; side collision
+                _direction.X *= -1;
+            }
+        }
     }
 }
